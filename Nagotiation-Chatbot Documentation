@@ -1,0 +1,103 @@
+1. Documentation Explaining How You Integrated the Model:
+Negotiation Chatbot Integration with Google Generative AI (Gemini)
+Overview:
+This project integrates Google Generative AI (Gemini) to build a negotiation chatbot
+capable of interacting with users and simulating a negotiation process for product prices. The chatbot initiates conversations with preset prices and responds dynamically based on
+user input, including discounts, counteroffers, and finalizing purchases. 
+
+Tools & APIs:
+- Google Generative AI (Gemini): Used to generate dynamic responses. 
+- Python: Backend programming language used for logic and API interaction. 
+
+Steps to Integrate the Model:
+1. Install the Required Libraries:
+Install the required library for Google Generative AI (Gemini):
+```bash
+pip install google-generativeai ``` 
+
+2.Set Up the API Key:
+You need an API key to authenticate requests to the Google Generative AI API. This is
+done via:
+
+```python
+import google.generativeai as genai
+GEMINI_API_KEY = "YOUR_API_KEY" # Replace with your actual API key
+genai.configure(api_key=GEMINI_API_KEY)
+```
+
+3. Call the AI Model:
+We use `generate_content()` to call the AI model and generate responses dynamically. This
+function integrates directly into our chatbot logic: 
+
+```python
+response = model.generate_content(
+prompt="Your custom prompt"
+)
+``` 
+
+4. Customizing the Chatbot:
+The chatbot has a negotiation flow that handles different scenarios based on user responses. It
+takes into account price offers and provides counteroffers:
+
+```python
+def negotiate_price(user_message, current_offer):
+# Custom negotiation logic
+# Calls the Gemini AI model if necessary
+response = model.generate_content(prompt=f"User: {user_message}")
+return response.generations[0].candidates[0].output ``` 
+
+5. Final Integration:
+The entire negotiation process integrates with user input and dynamic responses, forming a
+conversation flow: 
+
+```python
+def conversation_flow():
+while True:
+user_message = input("You: ")
+bot_response = negotiate_price(user_message, current_offer)
+print(f"Bot: {bot_response}")
+``` 
+6. Running the Chatbot:
+Run the program in the terminal, and the chatbot will respond dynamically based on the
+negotiation scenarios. 
+
+3. Short Demo Showing the Negotiation Process in Action
+
+Initial Offer by the Chatbot (Supplier):
+1. 
+Bot: "Welcome! The price for this product is $100. Would you like to proceed with this
+price, or make an offer?" 
+
+Possible Customer Responses:
+1. User: "Yes, I’ll take it at that price." 
+Bot: "Great! We’ll proceed with the order at $100." 
+2. User: "No, that’s too expensive." 
+Bot: "I understand. What price would work for you?" 
+3. User: "Can you offer a discount?" 
+Bot: "I can offer you a discount. How does $95 sound?" 
+4. User: "I would like to offer $90." 
+Bot: "Let me check. I can offer you a counteroffer at $95. Would you like to
+accept?" 
+5. User: "What’s the lowest price you can offer?" 
+Bot: "The lowest I can go is $95. How does that sound to you?" 
+
+Counteroffer by the Bot:
+1. Bot: "I see that you're offering $90, but the best I can do is $95. Would you like to
+proceed?"
+Further Customer Negotiation:
+1. User: "Can you make it $85?" 
+Bot: "Unfortunately, $85 is below my acceptable range. The lowest I can go is
+$90. Would that work?" 
+
+Finalization:
+1. Bot: "Great! I'll finalize the order for you at $95. Thank you for negotiating with us!" 
+
+If the User Rejects or Cancels:
+1. User: "No, I’m not interested."
+Bot: "Thank you for your time. Feel free to reach out if you change your mind." 
+2. User: "I’ve changed my mind." 
+Bot: "No worries! Let me know if you need any assistance in the future." 
+Ending the Conversation:
+1. Bot: "Thank you for negotiating with us! If you have any other questions or need further
+assistance, feel free to ask." 
+2. Bot: "It’s been a pleasure negotiating with you! If you'd like to discuss another product, I'm here to help." 
